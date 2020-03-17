@@ -2,3 +2,4 @@
 /template-server
 
 /server/.env
+/server/env-sls.yml
