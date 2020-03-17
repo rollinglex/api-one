@@ -3,9 +3,22 @@ const docClient = new AWS.DynamoDB.DocumentClient()
 var dynamodb = new AWS.DynamoDB();
 const { promisify } = require("util");
 require('dotenv').config();
-const table = {
-  TableName: process.env.table,
-}
+
+// const table = {
+//   TableName: process.env.table,
+// }
+const ssm = new AWS.SSM();
+const tableParams = {
+  Name: '/api/tableone', /* required */
+  WithDecryption: false
+};
+
+//get the table name
+const ssmGetParameter = promisify(ssm.getParameter).bind(ssm)
+
+
+
+
 const formatDateNow = () => {
   // returns current date and time in format: mm/dd//yyyy hh:mm
   let today = new Date();
@@ -18,18 +31,23 @@ const formatDateNow = () => {
   return `${mm}/${dd}/${yyyy} ${time}`
 }
 const getTodos = async () => {
+  const {Parameter } = await ssmGetParameter(tableParams)
   //gets all todos
   // used scan because the size of this table is relatively small
-    const params = { ...table}
+  console.log('parameters',Parameter);
+    const params = { 
+      TableName: Parameter.Value,
+    }
     const dynamodbScan = promisify(docClient.scan).bind(docClient)
     let todos = await dynamodbScan(params)
     return todos.Items
   }
   const addTodo =  async ({id, userId, description}) => {
+    const {Parameter } = await ssmGetParameter(tableParams)
     console.log('description',description);
     const createdOn = formatDateNow()
     const params = {
-      ...table,
+      TableName: Parameter.Value,
       Item: {
         id,
         userId,
@@ -44,9 +62,9 @@ const getTodos = async () => {
   }
   const deleteTodo =  async ({id, userId}) => {
     console.log('id',id);
-
+    const {Parameter } = await ssmGetParameter(tableParams)
     const params = {
-      ...table,
+      TableName: Parameter.Value,
       Key: {
         id: id,
         userId: userId        
