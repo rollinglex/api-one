@@ -1,0 +1,37 @@
+service: api-one-apollo-server
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  region: us-east-1
+  stage: dev
+  versionFunctions: false
+
+package:
+  individually: true
+
+custom:
+  webpack:
+    webpackConfig: 'webpack.config.js'
+    includeModules: true
+    packager: 'yarn'
+
+functions:
+  api-one-apollo-server: # deploys apollo server
+    handler: handler.graphql
+    events:
+      - http:
+        path: graphql
+        method: post
+        cors: true
+      - http:
+        path: graphql
+        method: get
+        cors: true
+
+
+# resources:

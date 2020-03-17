@@ -1,2 +1,4 @@
 /template-gateway
 /template-server
+
+/server/.env
