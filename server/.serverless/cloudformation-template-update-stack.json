@@ -62,83 +62,6 @@
         "LogGroupName": "/aws/lambda/api-one-apollo-server-dev-api-one-apollo-server"
       }
     },
-    "IamRoleLambdaExecution": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "AssumeRolePolicyDocument": {
-          "Version": "2012-10-17",
-          "Statement": [
-            {
-              "Effect": "Allow",
-              "Principal": {
-                "Service": [
-                  "lambda.amazonaws.com"
-                ]
-              },
-              "Action": [
-                "sts:AssumeRole"
-              ]
-            }
-          ]
-        },
-        "Policies": [
-          {
-            "PolicyName": {
-              "Fn::Join": [
-                "-",
-                [
-                  "dev",
-                  "api-one-apollo-server",
-                  "lambda"
-                ]
-              ]
-            },
-            "PolicyDocument": {
-              "Version": "2012-10-17",
-              "Statement": [
-                {
-                  "Effect": "Allow",
-                  "Action": [
-                    "logs:CreateLogStream",
-                    "logs:CreateLogGroup"
-                  ],
-                  "Resource": [
-                    {
-                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/api-one-apollo-server-dev*:*"
-                    }
-                  ]
-                },
-                {
-                  "Effect": "Allow",
-                  "Action": [
-                    "logs:PutLogEvents"
-                  ],
-                  "Resource": [
-                    {
-                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/api-one-apollo-server-dev*:*:*"
-                    }
-                  ]
-                }
-              ]
-            }
-          }
-        ],
-        "Path": "/",
-        "RoleName": {
-          "Fn::Join": [
-            "-",
-            [
-              "api-one-apollo-server",
-              "dev",
-              {
-                "Ref": "AWS::Region"
-              },
-              "lambdaRole"
-            ]
-          ]
-        }
-      }
-    },
     "ApiDashoneDashapolloDashserverLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
@@ -146,23 +69,17 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/api-one-apollo-server/dev/1584419312891-2020-03-17T04:28:32.891Z/api-one-apollo-server.zip"
+          "S3Key": "serverless/api-one-apollo-server/dev/1584425206838-2020-03-17T06:06:46.838Z/api-one-apollo-server.zip"
         },
         "FunctionName": "api-one-apollo-server-dev-api-one-apollo-server",
         "Handler": "handler.graphql",
         "MemorySize": 1024,
-        "Role": {
-          "Fn::GetAtt": [
-            "IamRoleLambdaExecution",
-            "Arn"
-          ]
-        },
+        "Role": "arn:aws:iam::0123456789:role//my/default/path/roleInMyAccount",
         "Runtime": "nodejs10.x",
         "Timeout": 6
       },
       "DependsOn": [
-        "ApiDashoneDashapolloDashserverLogGroup",
-        "IamRoleLambdaExecution"
+        "ApiDashoneDashapolloDashserverLogGroup"
       ]
     },
     "ApiGatewayRestApi": {
@@ -323,7 +240,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1584419297079": {
+    "ApiGatewayDeployment1584425189358": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {

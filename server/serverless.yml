@@ -10,7 +10,7 @@ provider:
   region: us-east-1
   stage: dev
   versionFunctions: false
-  
+  role: arn:aws:iam::0123456789:role//my/default/path/roleInMyAccount
 
 package:
   individually: true

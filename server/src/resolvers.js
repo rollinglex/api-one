@@ -2,7 +2,7 @@ const AWS = require('aws-sdk');
 const docClient = new AWS.DynamoDB.DocumentClient() 
 var dynamodb = new AWS.DynamoDB();
 const { promisify } = require("util");
-require('dotenv').config();
+// require('dotenv').config();
 
 // const table = {
 //   TableName: process.env.table,
@@ -15,9 +15,6 @@ const tableParams = {
 
 //get the table name
 const ssmGetParameter = promisify(ssm.getParameter).bind(ssm)
-
-
-
 
 const formatDateNow = () => {
   // returns current date and time in format: mm/dd//yyyy hh:mm
