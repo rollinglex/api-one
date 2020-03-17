@@ -16,12 +16,16 @@ const typeDefs = gql`
   type Mutation {
     addTodo(input: AddTodoInput!): Todo
     editTodo(input: EditTodoInput!): Todo
-    deleteTodo(input: String!): Todo
+    deleteTodo(input: DeleteTodoInput!): String
   }
   input AddTodoInput {
     id: ID!
     userId: String!
     description: String!
+  }
+  input DeleteTodoInput {
+    id: ID!
+    userId: String!
   }
   input EditTodoInput {
     userId: String!

@@ -23,7 +23,6 @@ const getTodos = async () => {
     const params = { ...table}
     const dynamodbScan = promisify(docClient.scan).bind(docClient)
     let todos = await dynamodbScan(params)
-    console.log('todos',todos);
     return todos.Items
   }
   const addTodo =  async ({id, userId, description}) => {
@@ -39,23 +38,43 @@ const getTodos = async () => {
         description,
       }
     }
-    const dynamodbUpdate = promisify(docClient.put).bind(docClient)
-    const addingTodo = await dynamodbUpdate(params)
+    const dynamodbPut = promisify(docClient.put).bind(docClient)
+    const addingTodo = await dynamodbPut(params)
     return addingTodo
+  }
+  const deleteTodo =  async ({id, userId}) => {
+    console.log('id',id);
+
+    const params = {
+      ...table,
+      Key: {
+        id: id,
+        userId: userId        
+      }
+    }
+    console.log('params',params);
+    const dynamodbDelete = promisify(docClient.delete).bind(docClient)
+    const deleteTodo = await dynamodbDelete (params)
+    console.log('deleteTodo',deleteTodo);
+    return deleteTodo
   }
   const resolvers = {
     Query: {
-      getTodos(_,__,context){
-        console.log('context',context);
+      getTodos(){
         return getTodos()
       }
     },
     Mutation: {
       addTodo (_, {input}){
-        console.log('input',input);
         addTodo(input)
         return input
+      },
+      deleteTodo (_, {input}){
+        console.log('input',input);
+        deleteTodo(input)
+        return input.id
       }
+
     }
   }
 

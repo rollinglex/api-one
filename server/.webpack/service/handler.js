@@ -14,12 +14,16 @@ module.exports=function(e){var t={};function n(o){if(t[o])return t[o].exports;va
   type Mutation {
     addTodo(input: AddTodoInput!): Todo
     editTodo(input: EditTodoInput!): Todo
-    deleteTodo(input: String!): Todo
+    deleteTodo(input: DeleteTodoInput!): String
   }
   input AddTodoInput {
     id: ID!
     userId: String!
     description: String!
+  }
+  input DeleteTodoInput {
+    id: ID!
+    userId: String!
   }
   input EditTodoInput {
     userId: String!
@@ -29,5 +33,5 @@ module.exports=function(e){var t={};function n(o){if(t[o])return t[o].exports;va
     lastEdited: String
   }
 
-`;e.exports=r},function(e,t,n){const o=n(5),r=new o.DynamoDB.DocumentClient;new o.DynamoDB;const{promisify:i}=n(6);n(7).config();const d={TableName:process.env.table},u=async({id:e,userId:t,description:n})=>{console.log("description",n);const o=(()=>{let e=new Date;const t=`${String(e.getHours()).padStart(2,"0")}:${String(e.getMinutes()).padStart(2,"0")}`,n=String(e.getDate()).padStart(2,"0");return`${String(e.getMonth()+1).padStart(2,"0")}/${n}/${e.getFullYear()} ${t}`})(),u={...d,Item:{id:e,userId:t,completed:!1,createdOn:o,description:n}},a=i(r.put).bind(r);return await a(u)},a={Query:{getTodos:(e,t,n)=>(console.log("context",n),(async()=>{const e={...d},t=i(r.scan).bind(r);let n=await t(e);return console.log("todos",n),n.Items})())},Mutation:{addTodo:(e,{input:t})=>(console.log("input",t),u(t),t)}};e.exports=a},function(e,t){e.exports=require("aws-sdk")},function(e,t){e.exports=require("util")},function(e,t){e.exports=require("dotenv")}]);
+`;e.exports=r},function(e,t,n){const o=n(5),r=new o.DynamoDB.DocumentClient;new o.DynamoDB;const{promisify:i}=n(6);n(7).config();const d={TableName:process.env.table},u=async({id:e,userId:t,description:n})=>{console.log("description",n);const o=(()=>{let e=new Date;const t=`${String(e.getHours()).padStart(2,"0")}:${String(e.getMinutes()).padStart(2,"0")}`,n=String(e.getDate()).padStart(2,"0");return`${String(e.getMonth()+1).padStart(2,"0")}/${n}/${e.getFullYear()} ${t}`})(),u={...d,Item:{id:e,userId:t,completed:!1,createdOn:o,description:n}},s=i(r.put).bind(r);return await s(u)},s={Query:{getTodos:()=>(async()=>{const e={...d},t=i(r.scan).bind(r);return(await t(e)).Items})()},Mutation:{addTodo:(e,{input:t})=>(u(t),t),deleteTodo:(e,{input:t})=>(console.log("input",t),(async({id:e,userId:t})=>{console.log("id",e);const n={...d,Key:{id:e,userId:t}};console.log("params",n);const o=i(r.delete).bind(r),u=await o(n);console.log("deleteTodo",u)})(t),t.id)}};e.exports=s},function(e,t){e.exports=require("aws-sdk")},function(e,t){e.exports=require("util")},function(e,t){e.exports=require("dotenv")}]);
 //# sourceMappingURL=handler.js.map
