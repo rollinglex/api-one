@@ -82,7 +82,7 @@ const getTodos = async () => {
     Mutation: {
       addTodo (_, {input}){
         addTodo(input)
-        return input
+        return getTodos()
       },
       deleteTodo (_, {input}){
         console.log('input',input);

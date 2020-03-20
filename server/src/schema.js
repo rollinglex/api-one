@@ -14,7 +14,7 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    addTodo(input: AddTodoInput!): Todo
+    addTodo(input: AddTodoInput!): [Todo]
     editTodo(input: EditTodoInput!): Todo
     deleteTodo(input: DeleteTodoInput!): String
   }
